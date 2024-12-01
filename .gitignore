@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CMake build artifacts
 build/
 *.o
@@ -23,3 +24,37 @@ build/
 
 # Windows specific
 Thumbs.db
+=======
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+>>>>>>> 7780f57ec185cefa14e5c1534ec6b19bf2b360f3
