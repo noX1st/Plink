@@ -1,0 +1,25 @@
+# CMake build artifacts
+build/
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+*.exe
+*.app
+*.qrc
+*.user
+*.pro.user
+*.pro.user.*
+
+# Qt Creator specific
+*.autosave
+*.qbs
+*.qbs.user
+*.swp
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
