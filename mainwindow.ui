@@ -6,26 +6,1084 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>960</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(28, 25, 29);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>58</x>
+      <y>0</y>
+      <width>901</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(40, 36, 42);</string>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="QStackedWidget" name="stackedWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>0</y>
+        <width>701</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(50, 45, 52);</string>
+      </property>
+      <widget class="QWidget" name="friendsPage">
+       <widget class="QStackedWidget" name="stackedWidgetFriends">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>51</y>
+          <width>701</width>
+          <height>467</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(50, 45, 52);</string>
+        </property>
+        <widget class="QWidget" name="friendsOnlinePage">
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>661</width>
+            <height>451</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="minimumSize">
+                <size>
+                 <width>55</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(196, 181, 203);</string>
+               </property>
+               <property name="text">
+                <string>ONLINE -</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>15</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QScrollArea" name="FriendsScrollArea">
+             <property name="styleSheet">
+              <string notr="true">border: none;
+</string>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>659</width>
+                <height>421</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="friendsPendingPage"/>
+        <widget class="QWidget" name="friendsAddPage">
+         <widget class="QWidget" name="">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>682</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="styleSheet">
+              <string notr="true">color: rgb(196, 181, 203);</string>
+             </property>
+             <property name="text">
+              <string>ADD FRIEND</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>680</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+color: rgb(196, 181, 203);
+background-color: rgb(28, 25, 29);
+border: none;
+border-radius: 5px;
+}
+
+QLineEdit:focus {
+border: 2px solid #3498db;
+}</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="friendsAllPage">
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>661</width>
+            <height>451</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="minimumSize">
+                <size>
+                 <width>55</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(196, 181, 203);</string>
+               </property>
+               <property name="text">
+                <string>ALL FRIENDS -</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>15</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QScrollArea" name="FriendsScrollArea_2">
+             <property name="styleSheet">
+              <string notr="true">border: none;
+</string>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_3">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>659</width>
+                <height>421</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>691</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QWidget" name="widget_2" native="true">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="2">
+             <widget class="Line" name="line_2">
+              <property name="minimumSize">
+               <size>
+                <width>2</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(95, 88, 98);</string>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Shadow::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>2</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="thereIsNothing">
+              <property name="minimumSize">
+               <size>
+                <width>71</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>90</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Trebuchet MS</family>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+color: rgb(217, 200, 225);
+	color: rgb(226, 209, 235);
+background-color: rgb(50, 45, 52);
+border: none;
+border-radius: 5px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Friends</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>icons/personPurpleIcon.png</normaloff>icons/personPurpleIcon.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="friendsOnlineBtn">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Trebuchet MS</family>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+color: rgb(196, 181, 203);
+background-color: rgb(50, 45, 52);
+border: none;
+border-radius: 5px;
+}
+QPushButton:hover {
+background-color: rgb(61, 56, 65);
+}
+QPushButton:checked{
+background-color: rgb(54, 49, 57);
+color: rgb(255, 255, 255);
+}
+</string>
+              </property>
+              <property name="text">
+               <string>Online</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="7">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="5">
+             <widget class="QPushButton" name="friendsPendingBtn">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Trebuchet MS</family>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+color: rgb(196, 181, 203);
+background-color: rgb(50, 45, 52);
+border: none;
+border-radius: 5px;
+}
+QPushButton:hover {
+background-color: rgb(61, 56, 65);
+}
+QPushButton:checked{
+background-color: rgb(54, 49, 57);
+color: rgb(255, 255, 255);
+}
+</string>
+              </property>
+              <property name="text">
+               <string>Pending</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="6">
+             <widget class="QPushButton" name="friendsAddBtn">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Trebuchet MS</family>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+background-color: rgb(36, 128, 69);
+color: rgb(255, 255, 255);
+border: none;
+border-radius: 5px;
+padding: 1px;
+}
+QPushButton:checked{
+background-color: rgb(50, 45, 52);
+color: rgb(54, 190, 56);
+color: rgb(46, 199, 113);
+}
+</string>
+              </property>
+              <property name="text">
+               <string>Add Friend</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QPushButton" name="friendsAllBtn">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Trebuchet MS</family>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+color: rgb(196, 181, 203);
+background-color: rgb(50, 45, 52);
+border: none;
+border-radius: 5px;
+}
+QPushButton:hover {
+background-color: rgb(61, 56, 65);
+}
+QPushButton:checked{
+background-color: rgb(54, 49, 57);
+color: rgb(255, 255, 255);
+}
+</string>
+              </property>
+              <property name="text">
+               <string>All</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(40, 36, 42);</string>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Plain</enum>
+           </property>
+           <property name="lineWidth">
+            <number>2</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="dmPage"/>
+     </widget>
+     <widget class="QScrollArea" name="scrollArea_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>50</y>
+        <width>200</width>
+        <height>406</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>200</width>
+         <height>406</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(196, 181, 203);</string>
+        </property>
+        <property name="text">
+         <string>DIRECT MESSAGES</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>190</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+color: rgb(196, 181, 203);
+background-color: rgb(40, 36, 42);
+border: none;
+border-radius: 5px;
+}
+QPushButton:hover {
+background-color: rgb(50, 45, 52);
+}
+QPushButton:checked{
+color: rgb(255, 255, 255);
+background-color: rgb(61, 56, 65);
+}
+
+</string>
+      </property>
+      <property name="text">
+       <string>Friends</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/personPurpleIcon.png</normaloff>icons/personPurpleIcon.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>4</x>
+      <y>50</y>
+      <width>54</width>
+      <height>467</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: none;</string>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContent">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>54</width>
+       <height>467</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="btn">
+        <property name="minimumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+color: rgb(0, 0, 0);
+background-color: #3498db;
+border: none;
+border-radius: 15px;
+max-width: 30px;
+max-height: 30px;
+}
+QPushButton:hover {
+background-color: #2980b9;
+}
+QPushButton:pressed {
+background-color: #1c5985;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>12</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addPushButton">
+        <property name="minimumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Trebuchet MS</family>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	color: rgb(0, 0, 0);
+background-color: #3498db;
+border: none;
+border-radius: 15px;
+max-width: 30px;
+max-height: 30px;
+}
+QPushButton:hover {
+background-color: #2980b9;
+}
+QPushButton:pressed {
+background-color: #1c5985;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>28</width>
+          <height>98</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: #3498db;
+border: none;
+border-radius: 15px;
+}
+QPushButton:hover {
+background-color: #2980b9;
+}
+QPushButton:pressed {
+background-color: #1c5985;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>58</x>
+      <y>456</y>
+      <width>200</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(72, 72, 72);
+background-color: rgb(37, 33, 38);
+background-color: rgb(32, 28, 33);</string>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="accountBtn">
+         <property name="minimumSize">
+          <size>
+           <width>77</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+/*background-color: rgb(28, 25, 29);*/
+color: rgb(255, 255, 255);
+border: none;
+padding: 5px;
+border-radius: 7px;
+}
+
+QPushButton:hover{
+background-color: rgb(47, 42, 49);
+}
+
+QPushButton:pressed{
+background-color: rgb(54, 48, 56);
+}</string>
+         </property>
+         <property name="text">
+          <string>nox1st</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../Pictures/different/qt/harmoniq/personIcon1.png</normaloff>../../../../../Pictures/different/qt/harmoniq/personIcon1.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="minimumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+/*background-color: rgb(28, 25, 29);*/
+color: rgb(255, 255, 255);
+border: none;
+padding: 5px;
+border-radius: 7px;
+}
+
+QPushButton:hover{
+background-color: rgb(47, 42, 49);
+}
+
+QPushButton:pressed{
+background-color: rgb(54, 48, 56);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>icons/microPurpleIcon.png</normaloff>icons/microPurpleIcon.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>19</width>
+           <height>19</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_6">
+         <property name="minimumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+/*background-color: rgb(28, 25, 29);*/
+color: rgb(255, 255, 255);
+border: none;
+padding: 5px;
+border-radius: 7px;
+}
+
+QPushButton:hover{
+background-color: rgb(47, 42, 49);
+}
+
+QPushButton:pressed{
+background-color: rgb(54, 48, 56);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>icons/headphonesPurpleIcon.png</normaloff>icons/headphonesPurpleIcon.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>19</width>
+           <height>19</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="minimumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+/*background-color: rgb(28, 25, 29);*/
+color: rgb(255, 255, 255);
+border: none;
+padding: 5px;
+border-radius: 7px;
+}
+
+QPushButton:hover{
+background-color: rgb(47, 42, 49);
+}
+
+QPushButton:pressed{
+background-color: rgb(54, 48, 56);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>icons/settingsPurpleIcon.png</normaloff>icons/settingsPurpleIcon.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>19</width>
+           <height>19</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>960</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuHarmoniq">
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+     </font>
+    </property>
+    <property name="title">
+     <string>Harmoniq</string>
+    </property>
+   </widget>
+   <addaction name="menuHarmoniq"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>addPushButton</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>btn</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>pushButton_5</tabstop>
+  <tabstop>pushButton_6</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
