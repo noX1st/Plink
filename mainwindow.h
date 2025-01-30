@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 #include <QMainWindow>
 #include <QButtonGroup>
+#include <qboxlayout.h>
+#include <qlineedit.h>
 #include "sign_in.h"
 #include "sign_up.h"
 #include "sql.h"
@@ -42,7 +44,17 @@ public:
     void setupEventFilter();
     bool eventFilter(QObject *obj, QEvent *event);
 
-    //void BackBtn_clicked();
+    void updateAllFriends();
+
+    void updatePendingFriends();
+
+private slots:
+
+    void on_addFriendBtn_clicked();
+
+    void acceptFriendRequest(const QString& senderUsername);
+
+    void removeFriend(const QString& friendUsername);
 
 private:
     QButtonGroup *friendsButtonGroup;
@@ -51,6 +63,10 @@ private:
     sign_up registration;
     User *user;
     Ui::MainWindow *ui;
-    sql* userSql;
+    sqlUser* userSql;
+
+    QLineEdit *friendLineEdit;
+    QPushButton *addFriendBtn;
+    QHBoxLayout *friendLayout;
 };
 #endif // MAINWINDOW_H

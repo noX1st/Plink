@@ -48,53 +48,18 @@ void User::set_birthday(const QDate& birthday_)
 }
 
 /*User& User::operator++()
-{
-    ++winGames;
-    return *this;
-}
 
 User User::operator++(int)
-{
-    User temp = *this;
-    ++winGames;
-    return temp;
-}
 
 User& User::operator--()
-{
-    --winGames;
-    return *this;
-}
 
 User User::operator--(int)
-{
-    User temp = *this;
-    --winGames;
-    return temp;
-}
 
 User& User::operator+(double addRating)
-{
-    userRating += addRating;
-    return *this;
-}
 
 User& User::operator-(double decreaseRating)
-{
-    userRating -= decreaseRating;
-    return *this;
-}
-
 User& User::operator=(const User& other)
 {
-    if (this != &other)
-    {
-        username = other.username;
-        password = other.password;
-        email = other.email;
-        birthday = other.birthday;
-        userRating = other.userRating;
-        winGames = other.winGames;
-    }
+    if (this != &other) {}
     return *this;
 }*/

@@ -11,10 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 
-# Добавление библиотеки для работы с SQL
 find_package(Qt6 REQUIRED COMPONENTS Sql)
 
-# Убедитесь, что нужные файлы найдены и подключены
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
@@ -55,7 +53,6 @@ else()
     endif()
 endif()
 
-# Добавление библиотеки Qt Sql для работы с базой данных
 target_link_libraries(Harmoniq PRIVATE Qt6::Sql Qt${QT_VERSION_MAJOR}::Widgets)
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)

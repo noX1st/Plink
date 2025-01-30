@@ -40,4 +40,3 @@ void sign_in::closeEvent(QCloseEvent *event)
     QApplication::quit();
     event->accept();
 }
-

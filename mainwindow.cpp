@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     , user(nullptr)
     , ui(new Ui::MainWindow)
     , userSql(new sqlUser(sqlConstans::mainConnection, sqlConstans::DBname))
+
 {
     ui->setupUi(this);
 
@@ -36,6 +37,38 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&sign_in, SIGNAL(signUpBtn_clicked()), this, SLOT(changeWindow()));
 
     userSql->createTable();
+    userSql->createFriendsTable();
+
+
+    ui->addFriendBtn->setParent(ui->friendLineEdit);
+    ui->addFriendBtn->move(ui->friendLineEdit->width() - ui->addFriendBtn->width() - 5,
+                           (ui->friendLineEdit->height() - ui->addFriendBtn->height()) / 2);
+    ui->addFriendBtn->raise();
+
+    ui->addFriendBtn->setEnabled(false);
+
+    ui->addFriendBtn->setStyleSheet(
+        "QPushButton { "
+        "   background-color: rgb(52, 152, 219); color: rgb(255, 255, 255); border-radius: 5px; padding: 1px;"
+        "} "
+        "QPushButton:disabled { "
+        "   background-color: rgb(32, 94, 135); color: #333;"
+        "} "
+        "QPushButton:hover { "
+        "   background-color: rgb(46, 134, 193);"
+        "} "
+        "QPushButton:pressed { "
+        "   background-color: rgb(40, 116, 167);"
+        "}"
+        );
+
+    connect(ui->friendLineEdit, &QLineEdit::textChanged, this, [this]() {
+        ui->addFriendBtn->setEnabled(!ui->friendLineEdit->text().isEmpty());
+    });
+
+    connect(ui->friendsPendingBtn, &QPushButton::clicked, this, &MainWindow::updatePendingFriends);
+
+    connect(ui->friendsAllBtn, &QPushButton::clicked, this, &MainWindow::updateAllFriends);
 }
 
 void MainWindow::changeWindow()
@@ -195,3 +228,153 @@ MainWindow::~MainWindow()
     delete user;
     delete ui;
 }
+
+void MainWindow::on_addFriendBtn_clicked()
+{
+    QString friendUsername = ui->friendLineEdit->text();
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+
+    if (!sql || !user) {
+        QMessageBox::warning(this, "Error", "User data error", QMessageBox::Ok);
+        return;
+    }
+
+    if (!sql->getUserByUsername(friendUsername)) {
+        QMessageBox::warning(this, "Information", "User wasn't found", QMessageBox::Ok);
+        return;
+    }
+
+    QString status = sql->getFriendshipStatus(user->get_username(), friendUsername);
+
+    if (status == "pending") {
+        QMessageBox::information(this, "Information", "Friend request already sent.", QMessageBox::Ok);
+        return;
+    }
+
+    if (status == "accepted") {
+        QMessageBox::information(this, "Information", "You are already friends!", QMessageBox::Ok);
+        return;
+    }
+
+
+    if (sql->sendFriendRequest(user->get_username(), friendUsername)) {
+        QMessageBox::information(this, "Success", "Friend request sent!", QMessageBox::Ok);
+    } else {
+        QMessageBox::warning(this, "Error", "Friend request failed", QMessageBox::Ok);
+    }
+}
+
+void MainWindow::updateAllFriends()
+{
+    if (!userSql->openDatabase())
+    {
+        qDebug() << "Database failed to open!";
+    }
+
+    ui->allFriendsListWidget->clear();
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+
+    if (!sql || !user) return;
+
+    QPair<QVector<QString>, int> allFriends = sql->getAllFriends(user->get_username());
+    //allFriendsCountLbl
+    for (const QString& friendUsername : allFriends.first) {
+        QWidget* itemWidget = new QWidget();
+        QHBoxLayout* layout = new QHBoxLayout(itemWidget);
+
+        QLabel* nameLabel = new QLabel(friendUsername);
+        QPushButton* messageButton = new QPushButton("Message");
+        QPushButton* deleteButton = new QPushButton("Remove");
+
+        layout->addWidget(nameLabel);
+        layout->addWidget(messageButton);
+        layout->addWidget(deleteButton);
+        itemWidget->setLayout(layout);
+
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setSizeHint(itemWidget->sizeHint());
+
+        ui->allFriendsListWidget->addItem(item);
+        ui->allFriendsListWidget->setItemWidget(item, itemWidget);
+
+        connect(messageButton, &QPushButton::clicked, this, [this, friendUsername]() {
+            //openChatWithFriend(friendUsername);
+        });
+
+        connect(deleteButton, &QPushButton::clicked, this, [this, friendUsername]() {
+            removeFriend(friendUsername);
+        });
+    }
+    ui->allFriendsCountLbl->setText(QString::number(allFriends.second));
+}
+
+void MainWindow::updatePendingFriends()
+{
+
+    ui->pendingListWidget->clear();
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+
+    if (!sql || !user) return;
+
+    QPair<QVector<QString>, int> pendingFriends = sql->getPendingRequests(user->get_username());
+
+    for (const QString& sender : pendingFriends.first)
+    {
+        QWidget* itemWidget = new QWidget();
+        QHBoxLayout* layout = new QHBoxLayout(itemWidget);
+
+        QLabel* nameLabel = new QLabel(sender);
+        QPushButton* acceptButton = new QPushButton("Accept");
+
+        layout->addWidget(nameLabel);
+        layout->addWidget(acceptButton);
+        itemWidget->setLayout(layout);
+
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setSizeHint(itemWidget->sizeHint());
+
+        ui->pendingListWidget->addItem(item);
+        ui->pendingListWidget->setItemWidget(item, itemWidget);
+
+
+        connect(acceptButton, &QPushButton::clicked, this, [this, sender]() {
+            acceptFriendRequest(sender);
+        });
+    }
+    ui->pendingFriendsCountLbl->setText(QString::number(pendingFriends.second));
+}
+
+void MainWindow::acceptFriendRequest(const QString &sender)
+{
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+    if (!sql || !user)
+    {
+        QMessageBox::warning(this, "Error", "User data error", QMessageBox::Ok);
+        return;
+    }
+
+    if (sql->acceptFriendRequest(sender, user->get_username()))
+    {
+        QMessageBox::information(this, "Success", "Friend request accepted!", QMessageBox::Ok);
+        updatePendingFriends();
+    } else {
+        QMessageBox::warning(this, "Error", "Failed to accept friend request", QMessageBox::Ok);
+    }
+}
+
+void MainWindow::removeFriend(const QString& friendUsername)
+{
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+    if (!sql || !user) {
+        QMessageBox::warning(this, "Error", "User data error", QMessageBox::Ok);
+        return;
+    }
+
+    if (QMessageBox::question(this, "Remove Friend", "Are you sure you want to remove " + friendUsername + " from your friends?",
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {
+        sql->deleteFriend(user->get_username(), friendUsername);
+        updateAllFriends();
+    }
+}
+

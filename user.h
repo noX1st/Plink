@@ -40,10 +40,6 @@ public:
     User& operator--();
 
     User operator--(int);
-
-    //User& operator+(double addRating);
-    //User& operator-(double decreaseRating);
-
     User& operator=(const User& other);*/
 };
 

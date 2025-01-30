@@ -11,6 +11,7 @@ struct sqlConstans{
     static const QString password;
     static const QString driver;
     static const QString userTableName;
+    static const QString friendTableName;
     static const QString mainConnection;
     static const QString DBname;
 };
@@ -36,11 +37,29 @@ class sqlUser : public sql
 public:
     sqlUser(const QString& connectionN, const QString& dbN);
 
+    bool openDatabase();
+
     virtual void createTable() override;
+
+    void createFriendsTable();
+
+    bool sendFriendRequest(const QString& sender, const QString& receiver);
+
+    bool getUserByUsername(const QString& username);
 
     bool getUser(User& user, const QString& table, const QString& email, const QString& password);
 
     void insertUser(const User& user);
+
+    QPair<QVector<QString>, int> getAllFriends(const QString& username);
+
+    QPair<QVector<QString>, int> getPendingRequests(const QString& username);
+
+    QString getFriendshipStatus(const QString& user1, const QString& user2);
+
+    bool acceptFriendRequest(const QString& user1, const QString& user2);
+
+    void deleteFriend(const QString& user1, const QString& user2);
 };
 
 #endif // SQL_H
