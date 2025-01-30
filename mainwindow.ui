@@ -56,7 +56,7 @@
          <string notr="true">background-color: rgb(50, 45, 52);</string>
         </property>
         <widget class="QWidget" name="friendsOnlinePage">
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>20</x>
@@ -138,7 +138,7 @@
         </widget>
         <widget class="QWidget" name="friendsPendingPage"/>
         <widget class="QWidget" name="friendsAddPage">
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -265,7 +265,7 @@ border: 2px solid #3498db;
          </widget>
         </widget>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -606,7 +606,7 @@ color: rgb(255, 255, 255);
          <string notr="true">color: rgb(196, 181, 203);</string>
         </property>
         <property name="text">
-         <string>DIRECT MESSAGES</string>
+         <string>DIRECT MESSAGES </string>
         </property>
        </widget>
       </widget>
@@ -898,7 +898,7 @@ background-color: rgb(54, 48, 56);
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../Pictures/different/qt/harmoniq/personIcon1.png</normaloff>../../../../../Pictures/different/qt/harmoniq/personIcon1.png</iconset>
+           <normaloff>../../../../Pictures/different/qt/harmoniq/personIcon1.png</normaloff>../../../../Pictures/different/qt/harmoniq/personIcon1.png</iconset>
          </property>
          <property name="iconSize">
           <size>
