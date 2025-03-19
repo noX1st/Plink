@@ -17,7 +17,7 @@
    <string notr="true">background-color: rgb(28, 25, 29);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidget">
+   <widget class="QStackedWidget" name="serversAndDmStackedWidget">
     <property name="geometry">
      <rect>
       <x>58</x>
@@ -771,9 +771,9 @@ background-color: rgb(61, 56, 65);
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>51</y>
+        <y>91</y>
         <width>201</width>
-        <height>411</height>
+        <height>371</height>
        </rect>
       </property>
      </widget>
@@ -792,7 +792,7 @@ background-color: rgb(61, 56, 65);
        </font>
       </property>
       <property name="text">
-       <string>Dirrect messages</string>
+       <string>Direct messages</string>
       </property>
      </widget>
     </widget>
@@ -824,7 +824,7 @@ background-color: rgb(61, 56, 65);
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="btn">
+       <widget class="QPushButton" name="serverBtn">
         <property name="minimumSize">
          <size>
           <width>36</width>
@@ -1216,7 +1216,7 @@ background-color: rgb(54, 48, 56);
   <tabstop>directMessagesBtn</tabstop>
   <tabstop>addPushButton</tabstop>
   <tabstop>friendsBtn</tabstop>
-  <tabstop>btn</tabstop>
+  <tabstop>serverBtn</tabstop>
   <tabstop>pushButton_3</tabstop>
   <tabstop>pushButton_5</tabstop>
   <tabstop>pushButton_6</tabstop>

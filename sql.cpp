@@ -41,7 +41,12 @@ sql::~sql()
     QSqlDatabase::removeDatabase(connectionName);
 }
 
-sqlUser::sqlUser(const QString& connectionN, const QString& dbN) : sql(connectionN, dbN){}
+sqlUser::sqlUser(const QString& connectionN, const QString& dbN) : sql(connectionN, dbN)
+{
+    createTable();
+    createFriendsTable();
+    createMessagesTable();
+}
 
 bool sqlUser::openDatabase() {
     if (!DB.isOpen()) {
@@ -91,6 +96,25 @@ void sqlUser::createFriendsTable() {
         qDebug() << "Error creating friends table:" << query.lastError().text();
     } else {
         qDebug() << "TABLE " + sqlConstans::friendTableName + " CREATED SUCCESSFULLY";
+    }
+
+    DB.close();
+}
+
+void sqlUser::createMessagesTable() {
+    if (!DB.isOpen()) DB.open();
+
+    request = "CREATE TABLE IF NOT EXISTS messages ("
+              "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+              "sender TEXT NOT NULL, "
+              "receiver TEXT NOT NULL, "
+              "message TEXT NOT NULL, "
+              "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);";
+
+    if (!query.exec(request)) {
+        qDebug() << "Error creating messages table:" << query.lastError().text();
+    } else {
+        qDebug() << "TABLE messages CREATED SUCCESSFULLY";
     }
 
     DB.close();
@@ -195,9 +219,35 @@ void sqlUser::insertUser(const User& user)
     DB.close();
 }
 
-QPair<QVector<QString>, int> sqlUser::getAllFriends(const QString &username) {
-    QVector<QString> friendsList;
+QVector<QString> sqlUser::getDirectMessages(const QString& username)
+{
     if (!DB.isOpen()) DB.open();
+
+    QVector<QString> directChats;
+    QSqlQuery query(DB);
+
+    query.prepare("SELECT user2 FROM friends WHERE user1 = :username AND status = 'accepted' "
+                  "UNION "
+                  "SELECT user1 FROM friends WHERE user2 = :username AND status = 'accepted'");
+    query.bindValue(":username", username);
+
+    if (!query.exec()) {
+        qDebug() << "Error in getDirectMessages:" << query.lastError().text();
+        return {};
+    }
+
+    while (query.next()) {
+        directChats.append(query.value(0).toString());
+    }
+
+    return directChats;
+}
+
+QPair<QVector<QString>, int> sqlUser::getAllFriends(const QString &username)
+{
+    if (!DB.isOpen()) DB.open();
+
+    QVector<QString> friendsList;
     QSqlQuery query(DB);
     query.prepare("SELECT user2 FROM " + sqlConstans::friendTableName + " WHERE user1 = :username AND status = 'accepted' "
                   "UNION "

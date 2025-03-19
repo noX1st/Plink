@@ -19,6 +19,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupEventFilter();
 
+    serversAndDmButtonGroup = new QButtonGroup(this);
+    serversAndDmButtonGroup->addButton(ui->directMessagesBtn, 0);
+    serversAndDmButtonGroup->addButton(ui->serverBtn, 1);
+    serversAndDmButtonGroup->setExclusive(true);
+
+    connect(serversAndDmButtonGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, [this](QAbstractButton *button){
+        int id = serversAndDmButtonGroup->id(button);
+        ui->serversAndDmStackedWidget->setCurrentIndex(id);
+    });
+
+
     friendsButtonGroup = new QButtonGroup(this);
     friendsButtonGroup->addButton(ui->friendsOnlineBtn, 0);
     friendsButtonGroup->addButton(ui->friendsAllBtn, 3);
@@ -64,6 +75,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->friendLineEdit, &QLineEdit::textChanged, this, [this]() {
         ui->addFriendBtn->setEnabled(!ui->friendLineEdit->text().isEmpty());
+    });
+
+    connect(ui->serversAndDmStackedWidget, &QStackedWidget::currentChanged, this, [this](int index) {
+        if (ui->serversAndDmStackedWidget->widget(index) == ui->directMessagesPage) {
+            updateDirectMessages();
+        }
     });
 
     connect(ui->friendsPendingBtn, &QPushButton::clicked, this, &MainWindow::updatePendingFriends);
@@ -261,6 +278,30 @@ void MainWindow::on_addFriendBtn_clicked()
         QMessageBox::information(this, "Success", "Friend request sent!", QMessageBox::Ok);
     } else {
         QMessageBox::warning(this, "Error", "Friend request failed", QMessageBox::Ok);
+    }
+}
+
+void MainWindow::updateDirectMessages()
+{
+    ui->directMessagesListWidget->clear();
+
+    sqlUser* sql = dynamic_cast<sqlUser*>(userSql);
+    if (!sql || !user) return;
+
+    QVector<QString> directChats = sql->getDirectMessages(user->get_username());
+
+    qDebug() << "Direct messages list for user:" << user->get_username();
+    for (const auto& chat : directChats) {
+        qDebug() << chat;
+    }
+
+    for (const QString& friendUsername : directChats) {
+        QListWidgetItem* dmItem = new QListWidgetItem(friendUsername);
+        ui->directMessagesListWidget->addItem(dmItem);
+
+        connect(ui->directMessagesListWidget, &QListWidget::itemClicked, this, [this](QListWidgetItem* item) {
+            //openChatWithFriend(item->text());
+        });
     }
 }
 

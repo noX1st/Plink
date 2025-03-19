@@ -43,6 +43,8 @@ public:
 
     void createFriendsTable();
 
+    void createMessagesTable();
+
     bool sendFriendRequest(const QString& sender, const QString& receiver);
 
     bool getUserByUsername(const QString& username);
@@ -50,6 +52,8 @@ public:
     bool getUser(User& user, const QString& table, const QString& email, const QString& password);
 
     void insertUser(const User& user);
+
+    QVector<QString> getDirectMessages(const QString& username);
 
     QPair<QVector<QString>, int> getAllFriends(const QString& username);
 

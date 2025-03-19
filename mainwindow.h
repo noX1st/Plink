@@ -44,6 +44,8 @@ public:
     void setupEventFilter();
     bool eventFilter(QObject *obj, QEvent *event);
 
+    void updateDirectMessages();
+
     void updateAllFriends();
 
     void updatePendingFriends();
@@ -57,6 +59,7 @@ private slots:
     void removeFriend(const QString& friendUsername);
 
 private:
+    QButtonGroup *serversAndDmButtonGroup;
     QButtonGroup *friendsButtonGroup;
 
     sign_in sign_in;
