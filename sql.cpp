@@ -2,233 +2,210 @@
 #include <QDebug>
 #include <QtSql/QSqlError>
 
-const QString sqlConstans::hostname = "127.0.0.1";
-const int sqlConstans::port = 3306;
-const QString sqlConstans::username = "noX1st";
-const QString sqlConstans::password = "password";
-const QString sqlConstans::driver = "QSQLITE";
-const QString sqlConstans::userTableName = "users";
-const QString sqlConstans::friendTableName = "friends";
-const QString sqlConstans::mainConnection = "main_connections";
-const QString sqlConstans::DBname = "Harmoniq.db";
+const QString SqlConstants::HOSTNAME = "127.0.0.1";
+const int SqlConstants::PORT = 3306;
+const QString SqlConstants::USERNAME = "username";
+const QString SqlConstants::PASSWORD = "password";
+const QString SqlConstants::DRIVER = "QSQLITE";
+const QString SqlConstants::USER_TABLE_NAME = "users";
+const QString SqlConstants::FRIEND_TABLE_NAME = "friends";
+const QString SqlConstants::MESSAGES_TABLE_NAME = "messages";
+const QString SqlConstants::MAIN_CONNECTION = "main_connections";
+const QString SqlConstants::DB_NAME = "Harmoniq.db";
 
-sql::sql(const QString& connectionN, const QString& dbN)
+Database::Database(const QString& connectionName, const QString& dbName)
 {
-    connectionName = connectionN;
-    DB = QSqlDatabase::addDatabase(sqlConstans::driver, connectionName);
-    DB.setHostName(sqlConstans::hostname);
-    DB.setPort(sqlConstans::port);
-    DB.setUserName(sqlConstans::username);
-    DB.setPassword(sqlConstans::password);
-    DB.setDatabaseName(dbN);
-    if (!DB.open())
-    {
-        throw std::runtime_error(DB.lastError().text().toStdString());
+    this->connectionName = connectionName;
+    db = QSqlDatabase::addDatabase(SqlConstants::DRIVER, connectionName);
+    db.setHostName(SqlConstants::HOSTNAME);
+    db.setPort(SqlConstants::PORT);
+    db.setUserName(SqlConstants::USERNAME);
+    db.setPassword(SqlConstants::PASSWORD);
+    db.setDatabaseName(dbName);
+
+    if (!db.open()) {
+        throw std::runtime_error(db.lastError().text().toStdString());
     }
-    else
-    {
-        qDebug()<<"connect is successfully created";
-    }
-    query = QSqlQuery(DB);
-    DB.close();
+
+    query = QSqlQuery(db);
+    db.close();
 }
 
-sql::~sql()
+Database::~Database()
 {
     query.clear();
     query.finish();
-    DB.close();
+    db.close();
     QSqlDatabase::removeDatabase(connectionName);
 }
 
-sqlUser::sqlUser(const QString& connectionN, const QString& dbN) : sql(connectionN, dbN)
+bool UserDatabase::openDatabase()
 {
-    createTable();
-    createFriendsTable();
-    createMessagesTable();
-}
-
-bool sqlUser::openDatabase() {
-    if (!DB.isOpen()) {
-        if (!DB.open()) {
-            qDebug() << "Database failed to open:" << DB.lastError().text();
+    if (!db.isOpen())
+    {
+        if (!db.open()) {
+            qDebug() << "Database failed to open:" << db.lastError().text();
             return false;
         }
     }
     return true;
 }
 
-
-void sqlUser::createTable()
+UserDatabase::UserDatabase(const QString& connectionName, const QString& dbName)
+    : Database(connectionName, dbName)
 {
-    DB.open();
-    request = "CREATE TABLE IF NOT EXISTS " + sqlConstans::userTableName + " ("
-                                                                           "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                                                           "username TEXT NOT NULL UNIQUE, "
-                                                                           "email TEXT NOT NULL UNIQUE, "
-                                                                           "password TEXT NOT NULL, "
-                                                                           "birthday DATE NOT NULL);";
-
-    if (!query.exec(request))
-    {
-        DB.close();
-        throw std::runtime_error(DB.lastError().text().toStdString());
-    }
-    else
-    {
-        qDebug()<<"TABLE " + sqlConstans::userTableName + " CREATED SUCCESFULLY";
-        DB.close();
-    }
+    //createTable();
+    //createFriendsTable();
+    //createMessagesTable();
 }
 
-void sqlUser::createFriendsTable() {
-    if (!DB.isOpen()) {
-        DB.open();
+void UserDatabase::createTable()
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
     }
-    request = "CREATE TABLE IF NOT EXISTS " + sqlConstans::friendTableName + " ("
-                                                                             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                                                             "user1 TEXT NOT NULL, "
-                                                                             "user2 TEXT NOT NULL, "
-                                                                             "status TEXT NOT NULL CHECK(status IN ('pending', 'accepted', 'rejected'))"
-                                                                             ");";
-    QSqlQuery query(DB);
+
+    QString request = "CREATE TABLE IF NOT EXISTS " + SqlConstants::USER_TABLE_NAME + " ("
+                                                                                      "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                                                                      "username TEXT NOT NULL UNIQUE, "
+                                                                                      "email TEXT NOT NULL UNIQUE, "
+                                                                                      "password TEXT NOT NULL, "
+                                                                                      "birthday DATE NOT NULL);";
+
+    QSqlQuery query(db);
+    if (!query.exec(request)) {
+        db.close();
+        throw std::runtime_error(db.lastError().text().toStdString());
+    }
+
+    db.close();
+}
+
+void UserDatabase::createFriendsTable()
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
+    QString request = "CREATE TABLE IF NOT EXISTS " + SqlConstants::FRIEND_TABLE_NAME + " ("
+                                                                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                                                                        "user1 TEXT NOT NULL, "
+                                                                                        "user2 TEXT NOT NULL, "
+                                                                                        "status TEXT NOT NULL CHECK(status IN ('pending', 'accepted', 'rejected'))";
+
+    QSqlQuery query(db);
     if (!query.exec(request)) {
         qDebug() << "Error creating friends table:" << query.lastError().text();
-    } else {
-        qDebug() << "TABLE " + sqlConstans::friendTableName + " CREATED SUCCESSFULLY";
     }
 
-    DB.close();
+    db.close();
 }
 
-void sqlUser::createMessagesTable() {
-    if (!DB.isOpen()) DB.open();
+void UserDatabase::createMessagesTable()
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
-    request = "CREATE TABLE IF NOT EXISTS messages ("
-              "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-              "sender TEXT NOT NULL, "
-              "receiver TEXT NOT NULL, "
-              "message TEXT NOT NULL, "
-              "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);";
+    QString request = "CREATE TABLE IF NOT EXISTS " + SqlConstants::MESSAGES_TABLE_NAME + " ("
+                                                                                          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                                                                          "sender TEXT NOT NULL, "
+                                                                                          "receiver TEXT NOT NULL, "
+                                                                                          "message TEXT NOT NULL, "
+                                                                                          "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
 
+    QSqlQuery query(db);
     if (!query.exec(request)) {
         qDebug() << "Error creating messages table:" << query.lastError().text();
-    } else {
-        qDebug() << "TABLE messages CREATED SUCCESSFULLY";
+        throw std::runtime_error(query.lastError().text().toStdString());
     }
 
-    DB.close();
+    db.close();
 }
 
-bool sqlUser::sendFriendRequest(const QString& sender, const QString& receiver) {
-    if (sender.isEmpty() || receiver.isEmpty()) {
-        qDebug() << "Error: Sender or receiver is empty!";
-        return false;
+bool UserDatabase::getUserByUsername(const QString& username)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
     }
 
-    if (sender == receiver) {
-        qDebug() << "Error: User cannot send a friend request to themselves!";
-        return false;
-    }
-
-    if (!DB.isOpen()) {
-        DB.open();
-    }
-
-    QSqlQuery query(DB);
-    query.prepare("INSERT INTO " + sqlConstans::friendTableName + " (user1, user2, status) "
-                                                                  "VALUES (:sender, :receiver, 'pending');");
-
-    query.bindValue(":sender", sender);
-    query.bindValue(":receiver", receiver);
-
-    bool success = query.exec();
-
-    if (!success) {
-        qDebug() << "Error inserting friend request:" << query.lastError().text();
-        qDebug() << "Executed query:" << query.lastQuery();
-    } else {
-        qDebug() << "Friend request sent successfully from" << sender << "to" << receiver;
-    }
-
-    DB.close();
-    return success;
-}
-
-bool sqlUser::getUserByUsername(const QString& username) {
-    DB.open();
-    request = "SELECT * FROM " + sqlConstans::userTableName + " WHERE username = :username;";
-    query.prepare(request);
+    QSqlQuery query(db);
+    query.prepare("SELECT 1 FROM " + SqlConstants::USER_TABLE_NAME + " WHERE username = :username;");
     query.bindValue(":username", username);
 
-    bool exists = query.exec() && query.next();
-    DB.close();
-    return exists;
-}
-
-bool sqlUser::getUser(User& user, const QString& table, const QString& email, const QString& password)
-{
-    DB.open();
-    request = "select * from " + table + " where email=:emailID and password=:passwordID";
-    query.prepare(request);
-    query.bindValue(":emailID", email);
-    query.bindValue(":passwordID", password);
-    if (!query.exec())
-    {
-        qDebug()<<query.lastError().text().toStdString();
-        DB.close();
+    if (!query.exec()) {
+        qDebug() << "Error checking user existence:" << query.lastError().text();
         return false;
     }
-    else
-    {
-        qDebug()<<"data insert succesfully";
-        DB.close();
+
+    return query.next();
+}
+
+bool UserDatabase::getUser(User& user, const QString& table, const QString& email, const QString& password)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
     }
-    if (query.next())
-    {
+
+    QString request = "SELECT * FROM " + table + " WHERE email = :email AND password = :password";
+    QSqlQuery query(db);
+    query.prepare(request);
+    query.bindValue(":email", email);
+    query.bindValue(":password", password);
+
+    if (!query.exec()) {
+        qDebug() << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
         user.set_username(query.value("username").toString());
         user.set_password(query.value("password").toString());
         user.set_birthday(query.value("birthday").toDate());
         return true;
     }
+
     return false;
 }
 
-void sqlUser::insertUser(const User& user)
+void UserDatabase::insertUser(const User& user)
 {
-    DB.open();
-    request = "INSERT INTO " + sqlConstans::userTableName + " ("
-                                                            "username, email, password, birthday) VALUES ("
-                                                            ":usernameID, :emailID, :passwordID, :birthdayID);";
-    query.prepare(request);
-    query.bindValue(":usernameID", user.get_username());
-    query.bindValue(":emailID", user.get_email());
-    query.bindValue(":passwordID", user.get_password());
-    query.bindValue(":birthdayID", user.get_birthday().toString());
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
-    if (!query.exec())
-    {
-        qDebug()<<query.lastError().text().toStdString();
+    QString request = "INSERT INTO " + SqlConstants::USER_TABLE_NAME + " ("
+                                                                       "username, email, password, birthday) VALUES ("
+                                                                       ":username, :email, :password, :birthday);";
+
+    QSqlQuery query(db);
+    query.prepare(request);
+    query.bindValue(":username", user.get_username());
+    query.bindValue(":email", user.get_email());
+    query.bindValue(":password", user.get_password());
+    query.bindValue(":birthday", user.get_birthday().toString());
+
+    if (!query.exec()) {
+        qDebug() << query.lastError().text();
         throw std::runtime_error(query.lastError().text().toStdString());
     }
-    else
-    {
-        qDebug()<<"data insert succesfully";
-    }
 
-    DB.close();
+    db.close();
 }
 
-QVector<QString> sqlUser::getDirectMessages(const QString& username)
+QVector<QString> UserDatabase::getDirectMessages(const QString& username)
 {
-    if (!DB.isOpen()) DB.open();
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
     QVector<QString> directChats;
-    QSqlQuery query(DB);
+    QString request = "SELECT user2 FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE user1 = :username AND status = 'accepted' "
+                                                                               "UNION "
+                                                                               "SELECT user1 FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE user2 = :username AND status = 'accepted'";
 
-    query.prepare("SELECT user2 FROM friends WHERE user1 = :username AND status = 'accepted' "
-                  "UNION "
-                  "SELECT user1 FROM friends WHERE user2 = :username AND status = 'accepted'");
+    QSqlQuery query(db);
+    query.prepare(request);
     query.bindValue(":username", username);
 
     if (!query.exec()) {
@@ -243,93 +220,204 @@ QVector<QString> sqlUser::getDirectMessages(const QString& username)
     return directChats;
 }
 
-QPair<QVector<QString>, int> sqlUser::getAllFriends(const QString &username)
+QPair<QVector<QString>, int> UserDatabase::getAllFriends(const QString& username) const
 {
-    if (!DB.isOpen()) DB.open();
+    if (!db.isOpen()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
     QVector<QString> friendsList;
-    QSqlQuery query(DB);
-    query.prepare("SELECT user2 FROM " + sqlConstans::friendTableName + " WHERE user1 = :username AND status = 'accepted' "
-                  "UNION "
-                  "SELECT user1 FROM " + sqlConstans::friendTableName + " WHERE user2 = :username AND status = 'accepted'");
+    QString request = "SELECT user2 FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE user1 = :username AND status = 'accepted' "
+                                                                               "UNION "
+                                                                               "SELECT user1 FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE user2 = :username AND status = 'accepted'";
+
+    QSqlQuery query(db);
+    query.prepare(request);
     query.bindValue(":username", username);
 
     if (query.exec()) {
         while (query.next()) {
             friendsList.append(query.value(0).toString());
         }
-        //qDebug() << "User" << username << "has" << friendsList.size() << "friends.";
     } else {
         qDebug() << "Error fetching friends list:" << query.lastError().text();
     }
 
-    return QPair<QVector<QString>, int>(friendsList, friendsList.size());
+    return qMakePair(friendsList, friendsList.size());
 }
 
-QPair<QVector<QString>, int> sqlUser::getPendingRequests(const QString& username) {
+bool UserDatabase::sendFriendRequest(const QString& sender, const QString& receiver)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
+    if (sender.isEmpty() || receiver.isEmpty()) {
+        qDebug() << "Error: Sender or receiver is empty!";
+        return false;
+    }
+
+    if (sender == receiver) {
+        qDebug() << "Error: User cannot send a friend request to themselves!";
+        return false;
+    }
+
+    QString request = "INSERT INTO " + SqlConstants::FRIEND_TABLE_NAME + " (user1, user2, status) "
+                                                                         "VALUES (:sender, :receiver, 'pending');";
+
+    QSqlQuery query(db);
+    query.prepare(request);
+    query.bindValue(":sender", sender);
+    query.bindValue(":receiver", receiver);
+
+    bool success = query.exec();
+
+    if (!success) {
+        qDebug() << "Error inserting friend request:" << query.lastError().text();
+    }
+
+    db.close();
+    return success;
+}
+
+QPair<QVector<QString>, int> UserDatabase::getPendingRequests(const QString& username)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
     QVector<QString> pendingRequests;
-    if (!DB.isOpen()) DB.open();
-    request = "SELECT user1 FROM " + sqlConstans::friendTableName + " WHERE user2 = :username AND status = 'pending';";
+    QString request = "SELECT user1 FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE user2 = :username AND status = 'pending';";
+
+    QSqlQuery query(db);
     query.prepare(request);
     query.bindValue(":username", username);
 
     if (query.exec()) {
-        while (query.next()) {//
+        while (query.next()) {
             pendingRequests.append(query.value(0).toString());
         }
     } else {
         qDebug() << "Error fetching pending requests:" << query.lastError().text();
     }
 
-    DB.close();
-    return QPair<QVector<QString>, int>(pendingRequests, pendingRequests.size());
+    return qMakePair(pendingRequests, pendingRequests.size());
 }
 
-QString sqlUser::getFriendshipStatus(const QString& user1, const QString& user2) {
-    if (!DB.isOpen()) DB.open();
-    request = "SELECT status FROM " + sqlConstans::friendTableName + " WHERE "
-                                                                     "(user1 = :user1 AND user2 = :user2) OR (user1 = :user2 AND user2 = :user1);";
+QString UserDatabase::getFriendshipStatus(const QString& user1, const QString& user2) const
+{
+    if (!db.isOpen()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
+    QString request = "SELECT status FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE "
+                                                                                "(user1 = :user1 AND user2 = :user2) OR (user1 = :user2 AND user2 = :user1);";
+
+    QSqlQuery query(db);
     query.prepare(request);
     query.bindValue(":user1", user1);
     query.bindValue(":user2", user2);
 
     if (!query.exec() || !query.next()) {
-        DB.close();
         return "";
     }
 
-    QString status = query.value(0).toString();
-    DB.close();
-    return status;
+    return query.value(0).toString();
 }
 
-bool sqlUser::acceptFriendRequest(const QString& user1, const QString& user2) {
-    if (!DB.isOpen()) DB.open();
-    request = "UPDATE " + sqlConstans::friendTableName + " SET status = 'accepted' "
-                                                         "WHERE user1 = :user1 AND user2 = :user2 AND status = 'pending';";
+bool UserDatabase::acceptFriendRequest(const QString& user1, const QString& user2)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
+    QString request = "UPDATE " + SqlConstants::FRIEND_TABLE_NAME + " SET status = 'accepted' "
+                                                                    "WHERE user1 = :user1 AND user2 = :user2 AND status = 'pending';";
+
+    QSqlQuery query(db);
     query.prepare(request);
     query.bindValue(":user1", user1);
     query.bindValue(":user2", user2);
 
     bool success = query.exec();
-    DB.close();
+
+    db.close();
     return success;
 }
 
-void sqlUser::deleteFriend(const QString& user1, const QString& user2)
+void UserDatabase::deleteFriend(const QString& user1, const QString& user2)
 {
-    if (!DB.isOpen()) DB.open();
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
 
-    QSqlQuery query(DB);
+    QString request = "DELETE FROM " + SqlConstants::FRIEND_TABLE_NAME + " WHERE "
+                                                                         "(user1 = :user1 AND user2 = :user2) OR (user1 = :user2 AND user2 = :user1);";
 
-    query.prepare("DELETE FROM " + sqlConstans::friendTableName + " WHERE (user1 = :user1 AND user2 = :user2) OR (user1 = :user2 AND user2 = :user1)");
+    QSqlQuery query(db);
+    query.prepare(request);
     query.bindValue(":user1", user1);
     query.bindValue(":user2", user2);
 
     if (!query.exec()) {
         qDebug() << "Failed to delete friend:" << query.lastError().text();
-    } else {
-        qDebug() << "Friend deleted successfully!";
     }
+
+    db.close();
+}
+
+void UserDatabase::sendMessage(const QString& sender, const QString& receiver, const QString& message)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
+    if (!getUserByUsername(sender) || !getUserByUsername(receiver)) {
+        qDebug() << "One of the users does not exist";
+        throw std::runtime_error("User not found");
+    }
+
+    QString request = "INSERT INTO " + SqlConstants::MESSAGES_TABLE_NAME + " (sender, receiver, message) "
+                                                                           "VALUES (:sender, :receiver, :message);";
+
+    QSqlQuery query(db);
+    query.prepare(request);
+    query.bindValue(":sender", sender);
+    query.bindValue(":receiver", receiver);
+    query.bindValue(":message", message);
+
+    if (!query.exec()) {
+        qDebug() << "Error sending message:" << query.lastError().text();
+        throw std::runtime_error(query.lastError().text().toStdString());
+    }
+
+    db.close();
+}
+
+QVector<QPair<QString, QString>> UserDatabase::getMessages(const QString& user1, const QString& user2)
+{
+    if (!openDatabase()) {
+        throw std::runtime_error("Database connection failed");
+    }
+
+    QVector<QPair<QString, QString>> messages;
+    QString request = "SELECT sender, message FROM " + SqlConstants::MESSAGES_TABLE_NAME + " WHERE "
+                                                                                           "(sender = :user1 AND receiver = :user2) OR (sender = :user2 AND receiver = :user1) "
+                                                                                           "ORDER BY timestamp ASC";
+
+    QSqlQuery query(db);
+    query.prepare(request);
+    query.bindValue(":user1", user1);
+    query.bindValue(":user2", user2);
+
+    if (!query.exec()) {
+        qDebug() << "Error fetching messages:" << query.lastError().text();
+        throw std::runtime_error(query.lastError().text().toStdString());
+    }
+
+    while (query.next()) {
+        messages.append(qMakePair(query.value(0).toString(), query.value(1).toString()));
+    }
+
+    return messages;
 }

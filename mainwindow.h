@@ -21,55 +21,48 @@ class MainWindow : public QMainWindow
 public slots:
     void changeWindow();
 
-protected:
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void display();
+
     void signIn();
     void signUp();
-
-    void startGame();
-    void singleGame();
-    void multiplayerGame();
-    void settings();
-    void statistic();
-
-    void exit();
+    void display();
     void exitApp();
 
-    void on_addPushButton_clicked();
-
-    void setupEventFilter();
-    bool eventFilter(QObject *obj, QEvent *event);
-
-    void updateDirectMessages();
-
-    void updateAllFriends();
-
-    void updatePendingFriends();
-
 private slots:
-
+    void on_addPushButtonBtn_clicked();
     void on_addFriendBtn_clicked();
-
+    void updateDirectMessages();
+    void updateAllFriends();
+    void updatePendingFriends();
     void acceptFriendRequest(const QString& senderUsername);
-
     void removeFriend(const QString& friendUsername);
 
 private:
+    void setupEventFilter();
+    bool eventFilter(QObject *obj, QEvent *event);
+
+    void setupButtonStyle(QPushButton *button);
+    void setupAddFriendButton();
+    void sendMessage();
+    void loadMessages(const QString& user1, const QString& user2);
+    void openChat(const QString& friendUsername);
+
     QButtonGroup *serversAndDmButtonGroup;
     QButtonGroup *friendsButtonGroup;
 
-    sign_in sign_in;
-    sign_up registration;
-    User *user;
+    std::unique_ptr<sign_in> signInWindow;
+    std::unique_ptr<sign_up> signUpWindow;
+    std::unique_ptr<User> user;
     Ui::MainWindow *ui;
-    sqlUser* userSql;
+    std::unique_ptr<UserDatabase> userDatabase;
+    QWidget *dmPage;
 
     QLineEdit *friendLineEdit;
     QPushButton *addFriendBtn;
     QHBoxLayout *friendLayout;
+
+    QString currentMessageReceiver;
 };
 #endif // MAINWINDOW_H
